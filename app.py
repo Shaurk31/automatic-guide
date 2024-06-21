@@ -116,6 +116,8 @@ st.markdown(
 )
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
+
+# File uploader
 uploaded_file = st.file_uploader("Upload an audio file", type=["mp3", "wav"])
 
 if uploaded_file is not None:

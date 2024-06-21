@@ -15,7 +15,7 @@ DEEPGRAM_API_KEY = st.secrets.get("DEEPGRAM_API_KEY")
 # Initialize clients
 clientO = OpenAI(api_key=OPENAI_API_KEY)
 clientE = ElevenLabs(api_key=ELEVENLABS_API_KEY)
-dg_client = Deepgram(DEEPGRAM_API_KEY)
+dg_client = DeepgramClient(DEEPGRAM_API_KEY)
 
 def steve_gpt(prompt):
     context = """

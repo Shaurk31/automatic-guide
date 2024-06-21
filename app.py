@@ -1,21 +1,14 @@
 import streamlit as st
 from openai import OpenAI
+import os
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
 from io import BytesIO
 import base64
-from deepgram import Deepgram
-import asyncio
 
-# Load secrets from Streamlit
-OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY")
-ELEVENLABS_API_KEY = st.secrets.get("ELEVENLABS_API_KEY")
-DEEPGRAM_API_KEY = st.secrets.get("DEEPGRAM_API_KEY")
-
-# Initialize clients
-clientO = OpenAI(api_key=OPENAI_API_KEY)
+clientO = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+ELEVENLABS_API_KEY = st.secrets["ELEVENLABS_API_KEY"]
 clientE = ElevenLabs(api_key=ELEVENLABS_API_KEY)
-dg_client = DeepgramClient(DEEPGRAM_API_KEY)
 
 def steve_gpt(prompt):
     context = """
@@ -61,13 +54,6 @@ def generate_audio_response(text):
             audio.write(chunk)
     audio.seek(0)
     return audio
-
-async def transcribe_audio(audio_file):
-    with open(audio_file, 'rb') as f:
-        source = {'buffer': f}
-        options = {'punctuate': True}
-        response = await dg_client.transcription.prerecorded(source, options)
-        return response['results']['channels'][0]['alternatives'][0]['transcript']
 
 st.markdown(
     """
@@ -115,45 +101,54 @@ st.markdown(
         margin-top: 20px;
     }
     </style>
-    """
+    <script>
+    function sendInput() {
+        var inputBox = document.getElementById("user-input");
+        var sendButton = document.getElementById("send-button");
+        if (inputBox.value !== "") {
+            sendButton.click();
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var inputBox = document.getElementById("user-input");
+        inputBox.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendInput();
+            }
+        });
+    });
+    </script>
+    """,
+    unsafe_allow_html=True
 )
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
+st.text_input("chat", key="input", placeholder="Say something to Steve...", label_visibility="collapsed")
 
-# File uploader
-uploaded_file = st.file_uploader("Upload an audio file", type=["mp3", "wav"])
-
-if uploaded_file is not None:
-    with open("uploaded_audio.mp3", "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    transcription = loop.run_until_complete(transcribe_audio("uploaded_audio.mp3"))
-    st.write(f"Transcription: {transcription}")
-    response = steve_gpt(transcription)
-    audio = generate_audio_response(response)
-    audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
-    audio_tag = f"""
-    <audio autoplay="true" class="audio-response">
-        <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-    </audio>
-    """
-    st.markdown(audio_tag, unsafe_allow_html=True)
-else:
-    st.text_input("chat", key="input", placeholder="Say something to Steve...", label_visibility="collapsed")
-    if st.button("Send", key="send"):
-        user_input = st.session_state.get("input", "")
-        if user_input:
-            response = steve_gpt(user_input)
-            audio = generate_audio_response(response)
-            audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
-            audio_tag = f"""
-            <audio autoplay="true" class="audio-response">
-                <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-            </audio>
-            """
-            st.markdown(audio_tag, unsafe_allow_html=True)
-        else:
-            st.write("Please enter some text to talk to Steve Jobs.")
+if st.button("Send", key="send"):
+    user_input = st.session_state.get("input", "")
+    if user_input:
+        response = steve_gpt(user_input)
+        audio = generate_audio_response(response)
+        audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
+        audio_tag = f"""
+        <audio autoplay="true" class="audio-response">
+            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+        </audio>
+        """
+        st.markdown(audio_tag, unsafe_allow_html=True)
+        #st.write("Steve is talking...")
+    else:
+        st.write("Please enter some text to talk to Steve Jobs.")
   
 st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <script>
+    document.getElementsByName('input')[0].id = 'user-input';
+    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
+    </script>
+    """,
+    unsafe_allow_html=True
+)

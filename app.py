@@ -1,6 +1,5 @@
 import streamlit as st
 from openai import OpenAI
-import os
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
 from io import BytesIO
@@ -8,10 +7,13 @@ import base64
 from deepgram import Deepgram
 import asyncio
 
-clientO = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-ELEVENLABS_API_KEY = st.secrets["ELEVENLABS_API_KEY"]
-DEEPGRAM_API_KEY = st.secrets["DEEPGRAM_API_KEY"]
+# Load secrets from Streamlit
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY")
+ELEVENLABS_API_KEY = st.secrets.get("ELEVENLABS_API_KEY")
+DEEPGRAM_API_KEY = st.secrets.get("DEEPGRAM_API_KEY")
 
+# Initialize clients
+clientO = OpenAI(api_key=OPENAI_API_KEY)
 clientE = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 dg_client = Deepgram(DEEPGRAM_API_KEY)
 
@@ -62,8 +64,9 @@ def generate_audio_response(text):
 
 async def transcribe_audio(audio_file):
     with open(audio_file, 'rb') as f:
-        source = {'buffer': f, 'mimetype': 'audio/mp3'}
-        response = await dg_client.transcription.prerecorded(source, {'punctuate': True})
+        source = {'buffer': f}
+        options = {'punctuate': True}
+        response = await dg_client.transcription.prerecorded(source, options)
         return response['results']['channels'][0]['alternatives'][0]['transcript']
 
 st.markdown(

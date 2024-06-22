@@ -112,7 +112,7 @@ if audio_bytes:
         response = steve_gpt(text_conv)
         st.write(response)
         audio = generate_audio_response(response)
-        st.audio(audio, format="audio/mp3")
+        #st.audio(audio, format="audio/mp3")
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
         audio_tag = f"""
         <audio autoplay="true" class="audio-response">

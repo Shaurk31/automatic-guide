@@ -75,7 +75,8 @@ def transcribe_input_audio(location):
     options = PrerecordedOptions(smart_format=True, summarize="v2")
        
     file_response = client_d.listen.prerecorded.v("1").transcribe_file(payload, options)
-    return file_response
+    json_response = file_response.to_json()
+    return json_response
 
 
 st.markdown(

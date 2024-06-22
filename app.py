@@ -2,6 +2,7 @@ import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 from openai import OpenAI
 import os
+import uuid
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
 from io import BytesIO
@@ -77,8 +78,14 @@ audio_bytes = audio_recorder(
     #icon_name="fa-solid fa-microphone",
     icon_size="1x",
 )
-if audio_bytes:
-    st.audio(audio_bytes, format="audio/mp3")
+
+path = os.path.join('responses', f"{uuid.uuid4()}.mp3")
+with open(path, "wb") as f:
+    f.write(audio_bytes)
+
+#audio display
+#if audio_bytes:
+#st.audio(audio_bytes, format="audio/mp3")
 
 if st.button("Send", key="send"):
     user_input = st.session_state.get("input", "")

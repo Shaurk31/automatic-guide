@@ -41,6 +41,7 @@ def steve_gpt(prompt):
         ],
         max_tokens=100
     )  # 75~ words
+    st.write("gpt yes")
     return response.choices[0].message.content
 
 def generate_audio_response(text):
@@ -62,6 +63,7 @@ def generate_audio_response(text):
         if chunk:
             audio.write(chunk)
     audio.seek(0)
+    st.write("tts yes")
     return audio
 
 def transcribe_input_audio(location):
@@ -76,6 +78,7 @@ def transcribe_input_audio(location):
        
     file_response = client_d.listen.prerecorded.v("1").transcribe_file(payload, options)
     json_response = file_response.to_json()
+    st.write("stt yes")
     return json_response
 
 

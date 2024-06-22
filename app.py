@@ -108,11 +108,11 @@ if audio_bytes:
     user_input = packet.name
     if user_input:
         text_conv = transcribe_input_audio(user_input)
-        st.write("stt yes")
+        st.write(text_conv)
         response = steve_gpt(text_conv)
-        st.write("gpt yes")
+        st.write(response)
         audio = generate_audio_response(response)
-        st.write("tts yes")
+        st.write(audio)
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
         audio_tag = f"""
         <audio autoplay="true" class="audio-response">

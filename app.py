@@ -90,7 +90,7 @@ st.markdown(
 )
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
-st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
+#st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
 
 audio_bytes = audio_recorder(
     text="Say something to Steve.",
@@ -103,11 +103,8 @@ audio_bytes = audio_recorder(
 if audio_bytes:
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
-    if packet:
-        st.audio(packet.name, format="audio/mp3")
-
-if st.button("Send", key="send"):
-    #user_input = st.session_state.get("input", "")
+    #if packet:
+        #st.audio(packet.name, format="audio/mp3")
     user_input = packet.name
     if user_input:
         text_conv = transcribe_input_audio(user_input)
@@ -121,17 +118,15 @@ if st.button("Send", key="send"):
         """
         st.markdown(audio_tag, unsafe_allow_html=True)
         #st.write("Steve is talking...")
-    else:
-        st.write("Please enter some text to talk to Steve Jobs.")
   
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown(
-    """
-    <script>
-    document.getElementsByName('input')[0].id = 'user-input';
-    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
-    </script>
-    """,
-    unsafe_allow_html=True
-)
+#st.markdown(
+#    """
+#    <script>
+#    document.getElementsByName('input')[0].id = 'user-input';
+#    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
+#    </script>
+#    """,
+#    unsafe_allow_html=True
+#)

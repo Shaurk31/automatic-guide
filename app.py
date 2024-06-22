@@ -41,7 +41,6 @@ def steve_gpt(prompt):
         ],
         max_tokens=100
     )  # 75~ words
-    st.write("gpt yes")
     return response.choices[0].message.content
 
 def generate_audio_response(text):
@@ -63,7 +62,6 @@ def generate_audio_response(text):
         if chunk:
             audio.write(chunk)
     audio.seek(0)
-    st.write("tts yes")
     return audio
 
 def transcribe_input_audio(location):
@@ -78,7 +76,6 @@ def transcribe_input_audio(location):
        
     file_response = client_d.listen.prerecorded.v("1").transcribe_file(payload, options)
     json_response = file_response.to_json()
-    st.write("stt yes")
     return json_response
 
 
@@ -111,14 +108,18 @@ if audio_bytes:
     user_input = packet.name
     if user_input:
         text_conv = transcribe_input_audio(user_input)
+        st.write("stt yes")
         response = steve_gpt(text_conv)
+        st.write("gpt yes")
         audio = generate_audio_response(response)
+        st.write("tts yes")
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
         audio_tag = f"""
         <audio autoplay="true" class="audio-response">
             <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
         </audio>
         """
+        packet.close()
         st.markdown(audio_tag, unsafe_allow_html=True)
         #st.write("Steve is talking...")
   

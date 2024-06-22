@@ -129,7 +129,7 @@ if audio_bytes:
   
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.experimental_rerun()
+st.rerun()
 
 #st.markdown(
 #    """

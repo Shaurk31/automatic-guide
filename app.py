@@ -1,5 +1,6 @@
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
+from streamlit_js_eval import streamlit_js_eval
 from openai import OpenAI
 import tempfile
 #import os
@@ -126,10 +127,11 @@ if audio_bytes:
         st.write("audio")
         st.markdown(audio_tag, unsafe_allow_html=True)
         #st.write("Steve is talking...")
-    st.experimental_rerun()
+    #st.experimental_rerun()
   
 st.markdown("</div>", unsafe_allow_html=True)
 
+streamlit_js_eval(js_expressions="parent.window.location.reload()")
 
 
 #st.markdown(

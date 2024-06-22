@@ -60,6 +60,20 @@ def generate_audio_response(text):
     audio.seek(0)
     return audio
 
+def transcribe_input_audio(location):
+    with open(location, "rb") as file:
+        buffer_data = file.read()
+
+    payload: FileSource = {
+        "buffer": buffer_data,
+    }
+
+    options = PrerecordedOptions(smart_format=True, summarize="v2")
+       
+    file_response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
+    return file_response
+
+
 st.markdown(
     """
     <style>

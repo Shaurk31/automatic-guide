@@ -58,9 +58,12 @@ def generate_audio_response(text):
         ),
     )
     audio = BytesIO()
-    for chunk in response:
-        if chunk:
-            audio.write(chunk)
+    if response:
+        for chunk in response:
+            if chunk:
+                audio.write(chunk)
+    else:
+        st.write("no response recieved")
     audio.seek(0)
     return audio
 

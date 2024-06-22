@@ -2,16 +2,18 @@ import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 from openai import OpenAI
 import tempfile
-import os
-import uuid
+#import os
+#import uuid
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
+from deepgram import DeepgramClient
 from io import BytesIO
 import base64
 
-clientO = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-ELEVENLABS_API_KEY = st.secrets["ELEVENLABS_API_KEY"]
-clientE = ElevenLabs(api_key=ELEVENLABS_API_KEY)
+client_o = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client_e = ElevenLabs(api_key=st.secrets["ELEVENLABS_API_KEY"])
+client_d = DeepgramClient()
+
 
 def steve_gpt(prompt):
     context = """
@@ -27,7 +29,7 @@ def steve_gpt(prompt):
     resembling a true Steve Jobs conversation.
     Communicate in a semi-formal manner suited for a casual call. Keep responses under 75 words.
     """
-    response = clientO.chat.completions.create(
+    response = client_o.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": context},
@@ -38,7 +40,7 @@ def steve_gpt(prompt):
     return response.choices[0].message.content
 
 def generate_audio_response(text):
-    response = clientE.text_to_speech.convert(
+    response = client_e.text_to_speech.convert(
         voice_id="90X0q8hW9UBezSmbMCRm",  # steve id
         optimize_streaming_latency="0",
         output_format="mp3_22050_32",

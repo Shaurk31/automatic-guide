@@ -133,6 +133,8 @@ audio_bytes = audio_recorder(
     icon_name="fa-solid fa-microphone",
     icon_size="3x",
 )
+if audio_bytes:
+    st.audio(audio_bytes, format="audio/mp3")
 
 if st.button("Send", key="send"):
     user_input = st.session_state.get("input", "")

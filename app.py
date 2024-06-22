@@ -3,8 +3,6 @@ from audio_recorder_streamlit import audio_recorder
 from streamlit_js_eval import streamlit_js_eval
 from openai import OpenAI
 import tempfile
-#import os
-#import uuid
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
 from deepgram import (
@@ -18,7 +16,6 @@ import base64
 client_o = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 client_e = ElevenLabs(api_key=st.secrets["ELEVENLABS_API_KEY"])
 client_d = DeepgramClient()
-
 
 def steve_gpt(prompt):
     context = """
@@ -65,7 +62,7 @@ def generate_audio_response(text):
             if chunk:
                 audio.write(chunk)
     else:
-        st.write("no response recieved")
+        st.write("no response received")
     audio.seek(0)
     return audio
 
@@ -83,6 +80,9 @@ def transcribe_input_audio(location):
     json_response = file_response.to_json()
     return json_response
 
+# Clear audio bytes from session state
+if 'audio_bytes' not in st.session_state:
+    st.session_state.audio_bytes = None
 
 st.markdown(
     """
@@ -95,7 +95,6 @@ st.markdown(
 )
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
-#st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
 
 audio_bytes = audio_recorder(
     text="Say something to Steve.",
@@ -106,10 +105,11 @@ audio_bytes = audio_recorder(
 )
 
 if audio_bytes:
+    st.session_state.audio_bytes = audio_bytes
+
+if st.session_state.audio_bytes:
     packet = tempfile.NamedTemporaryFile()
-    packet.write(audio_bytes)
-    #if packet:
-        #st.audio(packet.name, format="audio/mp3")
+    packet.write(st.session_state.audio_bytes)
     user_input = packet.name
     if user_input:
         text_conv = transcribe_input_audio(user_input)
@@ -124,22 +124,11 @@ if audio_bytes:
         </audio>
         """
         packet.close()
-        st.write("audio")
         st.markdown(audio_tag, unsafe_allow_html=True)
-        #st.write("Steve is talking...")
+        
+        # Clear audio bytes after processing
+        st.session_state.audio_bytes = None
+
     streamlit_js_eval(js_expressions="parent.window.location.reload()")
-  
+
 st.markdown("</div>", unsafe_allow_html=True)
-
-
-
-
-#st.markdown(
-#    """
-#    <script>
-#    document.getElementsByName('input')[0].id = 'user-input';
-#    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
-#    </script>
-#    """,
-#    unsafe_allow_html=True
-#)

@@ -59,6 +59,7 @@ def generate_audio_response(text):
     )
     audio = BytesIO()
     if response:
+        st.write("rep rec")
         for chunk in response:
             if chunk:
                 audio.write(chunk)

@@ -124,14 +124,14 @@ st.markdown(
 )
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
-st.text_input("chat", key="input", placeholder="Say something to Steve...", label_visibility="collapsed")
+st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
 
 audio_bytes = audio_recorder(
-    text="",
+    text="Say something to Steve.",
     recording_color="#e8b62c",
     neutral_color="#6aa36f",
-    icon_name="user",
-    icon_size="6x",
+    icon_name="fa-solid fa-microphone",
+    icon_size="3x",
 )
 
 if st.button("Send", key="send"):

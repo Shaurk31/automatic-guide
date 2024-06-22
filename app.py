@@ -113,12 +113,11 @@ if audio_bytes:
         st.write(response)
         audio = generate_audio_response(response)
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
-        st.markdown(f"""
-        <script>
-        var audio = new Audio("data:audio/mp3;base64,{audio_base64}");
-        audio.play();
-        </script>
-        """, unsafe_allow_html=True)
+        audio_tag = f"""
+        <audio autoplay>
+            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+        </audio>
+        """
         packet.close()
         st.write("audio done")
         #st.markdown(audio_tag, unsafe_allow_html=True)

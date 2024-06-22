@@ -55,74 +55,17 @@ def generate_audio_response(text):
             audio.write(chunk)
     audio.seek(0)
     return audio
-'''
+
 st.markdown(
     """
     <style>
-    .main {
-        background-color: #1f2c56;
-        padding-top: 50px;
-        text-align: center;
-        color: white;
-        height: 100vh;
-    }
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100%;
-    }
-    .input-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 20px;
-    }
-    .input-box {
-        width: 300px;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        margin-right: 10px;
-    }
-    .button {
-        width: 100px;
-        padding: 10px;
-        margin: 10px;
-        border: none;
-        border-radius: 50px;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        display: inline-block;
-        background-color: #28a745;
-    }
-    .audio-response {
-        margin-top: 20px;
-    }
     </style>
     <script>
-    function sendInput() {
-        var inputBox = document.getElementById("user-input");
-        var sendButton = document.getElementById("send-button");
-        if (inputBox.value !== "") {
-            sendButton.click();
-        }
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        var inputBox = document.getElementById("user-input");
-        inputBox.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                sendInput();
-            }
-        });
-    });
     </script>
     """,
     unsafe_allow_html=True
 )
-'''
+
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
 st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
@@ -132,7 +75,7 @@ audio_bytes = audio_recorder(
     recording_color="#e8b62c",
     neutral_color="#6aa36f",
     #icon_name="fa-solid fa-microphone",
-    icon_size="3x",
+    icon_size="1x",
 )
 if audio_bytes:
     st.audio(audio_bytes, format="audio/mp3")

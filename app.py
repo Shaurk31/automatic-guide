@@ -114,13 +114,13 @@ if audio_bytes:
         audio = generate_audio_response(response)
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
         audio_tag = f"""
-        <audio autoplay>
+        <audio autoplay="true" class="audio-response">
             <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
         </audio>
         """
         packet.close()
-        st.write("audio done")
-        #st.markdown(audio_tag, unsafe_allow_html=True)
+        st.write("audio")
+        st.markdown(audio_tag, unsafe_allow_html=True)
         #st.write("Steve is talking...")
   
 st.markdown("</div>", unsafe_allow_html=True)

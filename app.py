@@ -127,11 +127,11 @@ if audio_bytes:
         st.write("audio")
         st.markdown(audio_tag, unsafe_allow_html=True)
         #st.write("Steve is talking...")
-    #st.experimental_rerun()
+    streamlit_js_eval(js_expressions="parent.window.location.reload()")
   
 st.markdown("</div>", unsafe_allow_html=True)
 
-streamlit_js_eval(js_expressions="parent.window.location.reload()")
+
 
 
 #st.markdown(

@@ -82,6 +82,7 @@ audio_bytes = audio_recorder(
 path = os.path.join('responses', f"{uuid.uuid4()}.mp3")
 with open(path, "wb") as f:
     f.write(audio_bytes)
+    
 
 #audio display
 #if audio_bytes:

@@ -1,4 +1,5 @@
 import streamlit as st
+from audio_recorder_streamlit import audio_recorder
 from openai import OpenAI
 import os
 from elevenlabs.client import ElevenLabs
@@ -124,6 +125,14 @@ st.markdown(
 
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
 st.text_input("chat", key="input", placeholder="Say something to Steve...", label_visibility="collapsed")
+
+audio_bytes = audio_recorder(
+    text="",
+    recording_color="#e8b62c",
+    neutral_color="#6aa36f",
+    icon_name="user",
+    icon_size="6x",
+)
 
 if st.button("Send", key="send"):
     user_input = st.session_state.get("input", "")

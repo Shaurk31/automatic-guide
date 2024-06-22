@@ -6,7 +6,11 @@ import tempfile
 #import uuid
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
-from deepgram import DeepgramClient
+from deepgram import (
+    DeepgramClient,
+    PrerecordedOptions,
+    FileSource, 
+)
 from io import BytesIO
 import base64
 
@@ -70,7 +74,7 @@ def transcribe_input_audio(location):
 
     options = PrerecordedOptions(smart_format=True, summarize="v2")
        
-    file_response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
+    file_response = client_d.listen.prerecorded.v("1").transcribe_file(payload, options)
     return file_response
 
 
@@ -98,8 +102,8 @@ audio_bytes = audio_recorder(
 if audio_bytes:
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
-    #if packet:
-    #    st.audio(packet.name, format="audio/mp3")
+    if packet:
+        st.audio(packet.name, format="audio/mp3")
 
 if st.button("Send", key="send"):
     #user_input = st.session_state.get("input", "")

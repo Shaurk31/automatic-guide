@@ -129,6 +129,6 @@ if st.session_state.audio_bytes:
         # Clear audio bytes after processing
         st.session_state.audio_bytes = None
 
-    streamlit_js_eval(js_expressions="parent.window.location.reload()")
+    #streamlit_js_eval(js_expressions="parent.window.location.reload()")
 
 st.markdown("</div>", unsafe_allow_html=True)

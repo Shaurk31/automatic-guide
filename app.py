@@ -84,7 +84,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 st.markdown("<div class='main center'>", unsafe_allow_html=True)
 st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
 
@@ -99,13 +98,15 @@ audio_bytes = audio_recorder(
 if audio_bytes:
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
-    if packet:
-        st.audio(packet.name, format="audio/mp3")
+    #if packet:
+    #    st.audio(packet.name, format="audio/mp3")
 
 if st.button("Send", key="send"):
-    user_input = st.session_state.get("input", "")
+    #user_input = st.session_state.get("input", "")
+    user_input = packet.name
     if user_input:
-        response = steve_gpt(user_input)
+        text_conv = transcribe_input_audio(user_input)
+        response = steve_gpt(text_conv)
         audio = generate_audio_response(response)
         audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
         audio_tag = f"""

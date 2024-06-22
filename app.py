@@ -82,6 +82,15 @@ def transcribe_input_audio(location):
     json_response = file_response.to_json()
     return json_response
 
+def reload_page():
+    st.markdown("""
+        <script>
+        function reloadPage() {
+            window.location.reload();
+        }
+        reloadPage();
+        </script>
+        """, unsafe_allow_html=True)
 
 st.markdown(
     """
@@ -129,7 +138,7 @@ if audio_bytes:
   
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.rerun()
+reload_page()
 
 #st.markdown(
 #    """

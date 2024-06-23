@@ -114,7 +114,7 @@ audio_bytes = audio_recorder(
     icon_size="1x",
 )
 
-if audio_bytes:
+if st.button("Send", key="send"):
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
     #if packet:
@@ -136,12 +136,12 @@ if audio_bytes:
 st.markdown("</div>", unsafe_allow_html=True)
 
 
-#st.markdown(
-#    """
-#    <script>
-#    document.getElementsByName('input')[0].id = 'user-input';
-#    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
-#    </script>
-#    """,
-#    unsafe_allow_html=True
-#)
+st.markdown(
+    """
+    <script>
+    document.getElementsByName('input')[0].id = 'user-input';
+    document.getElementsByClassName('stButton')[0].firstElementChild.id = 'send-button';
+    </script>
+    """,
+    unsafe_allow_html=True
+)

@@ -107,7 +107,7 @@ st.markdown("<div class='main center'>", unsafe_allow_html=True)
 #st.text_input("chat", key="input", placeholder="Type something to Steve...", label_visibility="collapsed")
 
 audio_bytes = audio_recorder(
-    text="Say something to Steve.",
+    text="Say something to Steve. (click icon) ",
     recording_color="#e8b62c",
     neutral_color="#6aa36f",
     #icon_name="fa-solid fa-microphone",

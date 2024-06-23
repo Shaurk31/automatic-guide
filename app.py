@@ -84,21 +84,11 @@ def transcribe_input_audio(location):
     return json_response
 
 def audio_comp(BytesIO):
-    audio_base64 = base64.b64encode(BytesIO.getvalue()).decode('utf-8')
+    audio_base64 = base64.b64encode(audio.getvalue()).decode('utf-8')
     audio_tag = f"""
-    <audio autoplay class="audio-response">
+    <audio autoplay="true" class="audio-response">
         <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-        Your browser does not support the audio element.
     </audio>
-    <script>
-        var audioElements = document.getElementsByClassName('audio-response');
-        for (var i = 0; i < audioElements.length; i++) {{
-            audioElements[i].addEventListener('ended', function() {{
-                this.currentTime = 0;
-                this.play();
-            }}, false);
-        }}
-    </script>
     """
     st.markdown(audio_tag, unsafe_allow_html=True)
 
@@ -124,8 +114,7 @@ audio_bytes = audio_recorder(
     icon_size="1x",
 )
 
-#if st.button("Send", key="send"):
-if audio_bytes:
+if st.button("Send", key="send"):
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
     #if packet:

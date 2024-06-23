@@ -60,7 +60,7 @@ def generate_audio_response(text):
     )
     audio = BytesIO()
     if response:
-        st.write("rep rec")
+        #st.write("rep rec")
         for chunk in response:
             if chunk:
                 audio.write(chunk)
@@ -114,7 +114,8 @@ audio_bytes = audio_recorder(
     icon_size="1x",
 )
 
-if st.button("Send", key="send"):
+#if st.button("Send", key="send"):
+if audio_bytes:
     packet = tempfile.NamedTemporaryFile()
     packet.write(audio_bytes)
     #if packet:

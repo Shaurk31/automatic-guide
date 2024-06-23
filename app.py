@@ -122,14 +122,14 @@ if st.button("Send", key="send"):
     user_input = packet.name
     if user_input:
         text_conv = transcribe_input_audio(user_input)
-        st.write(text_conv)
+        #st.write(text_conv)
         response = steve_gpt(text_conv)
-        st.write(response)
+       # st.write(response)
         audio = generate_audio_response(response)
         #st.audio(audio)
         audio_comp(audio)
         packet.close()
-        st.write("audio")
+        #st.write("audio")
         #st.write("Steve is talking...")
     #streamlit_js_eval(js_expressions="parent.window.location.reload()")
   
